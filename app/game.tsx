@@ -78,7 +78,9 @@ export default function GameScreen() {
   const scoreRef = useRef(0);
 
   const [shieldActive, setShieldActive] = useState(false);
+  const shieldRef = useRef(false);
   const [slowUntilMs, setSlowUntilMs] = useState(0);
+  const slowUntilRef = useRef(0);
 
   const [toast, setToast] = useState<{ title: string; subtitle?: string; emoji: string } | null>(null);
   const toastUntilRef = useRef(0);
@@ -142,7 +144,7 @@ export default function GameScreen() {
     [router]
   );
 
-  const maybeShowToast = useCallback((fact: SportsFact, kind: ItemKind) => {
+  const showToast = useCallback((nowMs: number, fact: SportsFact, kind: ItemKind) => {
     const emoji = itemEmoji(kind, fact.emoji);
     const title =
       kind === 'shield'
@@ -154,7 +156,7 @@ export default function GameScreen() {
             : 'Trivia!';
 
     setToast({ title, subtitle: `${emoji} ${fact.title}${fact.subtitle ? ` — ${fact.subtitle}` : ''}`, emoji });
-    toastUntilRef.current = Date.now() + 2000;
+    toastUntilRef.current = nowMs + 2000;
   }, []);
 
   useEffect(() => {
@@ -170,6 +172,10 @@ export default function GameScreen() {
     toastUntilRef.current = 0;
     scoreRef.current = 0;
     setScore(0);
+    shieldRef.current = false;
+    setShieldActive(false);
+    slowUntilRef.current = 0;
+    setSlowUntilMs(0);
     obstaclesRef.current = [];
     itemsRef.current = [];
     nextIdRef.current = 1;
@@ -181,7 +187,7 @@ export default function GameScreen() {
     // Difficulty ramp: speed increases + obstacle spawn gets faster.
     const rampT = Math.min(1, elapsedSecRef.current / DIFFICULTY_RAMP_SECONDS);
     const baseSpeed = BASE_SPEED_PX_PER_SEC + SPEED_RAMP_PX_PER_SEC_PER_SEC * elapsedSecRef.current;
-    const slowActive = nowMs < slowUntilMs;
+    const slowActive = nowMs < slowUntilRef.current;
     const speed = baseSpeed * (slowActive ? 0.65 : 1);
 
     const obstacleSpawnMs = Math.floor(lerp(OBSTACLE_SPAWN_MS_START, OBSTACLE_SPAWN_MS_MIN, rampT));
@@ -219,7 +225,7 @@ export default function GameScreen() {
     scoreRef.current += 10 * dtSec;
 
     // Clear toast if expired.
-    if (toastUntilRef.current && Date.now() >= toastUntilRef.current) {
+    if (toastUntilRef.current && nowMs >= toastUntilRef.current) {
       toastUntilRef.current = 0;
       setToast(null);
     }
@@ -236,11 +242,17 @@ export default function GameScreen() {
         const r = { x, y: s.y, w: ITEM_SIZE, h: ITEM_SIZE };
         if (rectsIntersect(carRect, r)) {
           // Apply effect + show fact.
-          if (s.kind === 'shield') setShieldActive(true);
-          if (s.kind === 'slow') setSlowUntilMs(Date.now() + 3200);
+          if (s.kind === 'shield') {
+            shieldRef.current = true;
+            setShieldActive(true);
+          }
+          if (s.kind === 'slow') {
+            slowUntilRef.current = nowMs + 3200;
+            setSlowUntilMs(slowUntilRef.current);
+          }
           if (s.kind === 'boost') scoreRef.current += 150;
           if (s.kind === 'trivia') scoreRef.current += 60;
-          maybeShowToast(s.fact, s.kind);
+          showToast(nowMs, s.fact, s.kind);
         } else {
           remaining.push(s);
         }
@@ -257,7 +269,8 @@ export default function GameScreen() {
         const x = xCenter - OBSTACLE_SIZE / 2;
         const r = { x, y: o.y, w: OBSTACLE_SIZE, h: OBSTACLE_SIZE };
         if (!hit && rectsIntersect(carRect, r)) {
-          if (shieldActive) {
+          if (shieldRef.current) {
+            shieldRef.current = false;
             setShieldActive(false);
             hit = true; // consume shield, remove this obstacle
           } else {
