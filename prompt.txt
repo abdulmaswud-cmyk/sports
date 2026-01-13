@@ -1,0 +1,209 @@
+Cursor Build Prompt: Lane-Switching Car Game with Sports Knowledge (Expo / React Native)
+1. App Overview
+
+Build a native mobile car game using Expo + React Native where the player controls a car that switches lanes to avoid obstacles on a scrolling road.
+
+The game integrates open sports knowledge APIs (soccer, basketball, baseball) in a creative way. Sports data appears as power-ups, trivia events, visual collectibles, or score modifiers during gameplay. The goal is to combine fast arcade gameplay with lightweight sports knowledge.
+
+The app must:
+
+Run on iOS, Android, and Expo Web
+
+Be mobile-first and touch-optimized
+
+Be deployable to Vercel (Expo Web)
+
+2. Technical Requirements
+
+Framework: Expo (React Native)
+
+Language: TypeScript
+
+Routing: expo-router or React Navigation
+
+State Management: React hooks (useState, useEffect, useRef)
+
+Game Loop: requestAnimationFrame or setInterval
+
+Animations: React Native Animated API or Reanimated
+
+API Fetching: fetch or axios
+
+Platform Support: iOS, Android, Web
+
+Deployment: Vercel
+
+3. Core Game Mechanics
+
+Infinite vertically scrolling road
+
+3 lanes (left, center, right)
+
+Player car switches lanes using:
+
+Swipe left / right
+
+Or on-screen buttons
+
+Obstacles spawn randomly and move downward
+
+Collision with obstacle ends the game
+
+Speed and obstacle frequency increase over time
+
+Score increases based on survival time and collectibles
+
+4. Features
+Gameplay
+
+Lane switching
+
+Obstacle avoidance
+
+Progressive difficulty
+
+Score and high score tracking
+
+Game over and restart flow
+
+Sports Knowledge Integration
+
+Fetch sports data from open APIs
+
+Sports items appear on the road as:
+
+Power-ups (shield, slow obstacles, score boost)
+
+Trivia collectibles
+
+When collected:
+
+Show a short fact (team, player, league info)
+
+Apply a gameplay effect
+
+Supported Sports
+
+⚽ Soccer
+
+🏀 Basketball
+
+⚾ Baseball
+
+5. API Specification
+
+Use free, open sports APIs such as:
+
+TheSportsDB (Recommended)
+
+Base URL: https://www.thesportsdb.com/api/v1/json/3
+
+Example endpoints:
+
+Soccer teams: /search_all_teams.php?l=English%20Premier%20League
+
+Basketball leagues: /all_leagues.php
+
+Baseball teams: /search_all_teams.php?l=MLB
+
+Usage in Game
+
+Fetch sports data on game start
+
+Cache results in state
+
+Randomly assign sports facts to collectible items
+
+Display sport icon + fact when collected
+
+6. Styling & UX
+
+Dark road background with lane dividers
+
+Bright arcade-style obstacles and collectibles
+
+Sports collectibles use:
+
+Ball icons (soccer, basketball, baseball)
+
+Team or league colors
+
+Smooth animations (target 60 FPS)
+
+Minimal UI chrome during gameplay
+
+Responsive layout for Expo Web
+
+7. Suggested File Structure
+/app
+  ├── index.tsx        // Start screen
+  ├── game.tsx         // Main game screen
+  ├── gameover.tsx     // Game over screen
+/components
+  ├── Car.tsx
+  ├── Obstacle.tsx
+  ├── SportsItem.tsx
+/hooks
+  ├── useGameLoop.ts
+  ├── useSportsData.ts
+/utils
+  ├── collision.ts
+  ├── constants.ts
+
+8. Deployment Readiness
+
+Compatible with Expo Web (expo export:web)
+
+No native-only dependencies
+
+Environment variable support for API keys (if required)
+
+Optimized bundle size
+
+Works with Vercel static + serverless deployment
+
+Include clear build and deploy instructions
+
+9. Output Expectations
+
+The generated output should include:
+
+Fully working Expo app source code
+
+Lane-switching car game logic
+
+Sports API integration (soccer, basketball, baseball)
+
+Clean, readable, commented TypeScript code
+
+Instructions for:
+
+Local development
+
+Expo Web build
+
+Vercel deployment
+
+10. Development Notes
+
+Prioritize gameplay responsiveness
+
+Use placeholder graphics if needed
+
+Handle API failures gracefully
+
+Keep sports data lightweight (facts, names, icons)
+
+Code should be production-ready and extensible
+
+End of Prompt
+
+If you’d like, I can:
+
+Add leaderboards by sport
+
+Turn facts into trivia challenges
+
+Add sound effects & haptics
+
+Optimize the prompt for Cursor multi-file generation
