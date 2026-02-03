@@ -22,7 +22,25 @@ export default function Root({ children }: { children: React.ReactNode }) {
         <style dangerouslySetInnerHTML={{ __html: responsiveBackground }} />
         {/* Add any additional <head> elements that you want globally available on web... */}
       </head>
-      <body>{children}</body>
+      <body>
+        <div id="ad-script-container">
+          <script
+            dangerouslySetInnerHTML={{
+              __html: `
+  atOptions = {
+    'key' : 'b6eb691e5caffcd705c44b3d16527f47',
+    'format' : 'iframe',
+    'height' : 600,
+    'width' : 160,
+    'params' : {}
+  };
+`,
+            }}
+          />
+          <script src="https://www.highperformanceformat.com/b6eb691e5caffcd705c44b3d16527f47/invoke.js"></script>
+        </div>
+        {children}
+      </body>
     </html>
   );
 }
