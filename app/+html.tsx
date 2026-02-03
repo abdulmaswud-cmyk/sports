@@ -20,6 +20,7 @@ export default function Root({ children }: { children: React.ReactNode }) {
 
         {/* Using raw CSS styles as an escape-hatch to ensure the background color never flickers in dark-mode. */}
         <style dangerouslySetInnerHTML={{ __html: responsiveBackground }} />
+        <script src="https://pl28642504.effectivegatecpm.com/1a/62/ca/1a62cac51371546199f6c51eca739577.js"></script>
         {/* Add any additional <head> elements that you want globally available on web... */}
       </head>
       <body>
