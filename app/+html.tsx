@@ -23,7 +23,7 @@ export default function Root({ children }: { children: React.ReactNode }) {
         {/* Add any additional <head> elements that you want globally available on web... */}
       </head>
       <body>
-        <div id="ad-script-container">
+        <div id="ad-script-container" style={{ backgroundColor: '#0000ff' }}>
           <script
             dangerouslySetInnerHTML={{
               __html: `
